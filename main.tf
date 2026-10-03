@@ -91,22 +91,6 @@ resource "random_password" "db_passwd" {
   length  = 16
   special = true
 }
-resource "aws_secretsmanager_secret" "secret_manager_db" {
-  name = "scalable-web-postgres-credentials"
-  tags = {
-    Name        = "scalable-web-postgres-credentials"
-    Environment = "dev"
-  }
-}
-resource "aws_secretsmanager_secret_version" "store_credential_db" {
-  secret_id = aws_secretsmanager_secret.secret_manager_db.id
-
-  secret_string = jsonencode({
-    username = var.db_username
-    password = random_password.db_passwd.result
-    db_name  = var.db_name
-  })
-}
 
 resource "aws_sns_topic" "alarm" {
   name = "scalable-web-platform-alarm"
@@ -117,21 +101,4 @@ resource "aws_sns_topic_subscription" "email_alerts" {
   protocol  = "email"
   endpoint  = "ns448875@gmail.com"
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
