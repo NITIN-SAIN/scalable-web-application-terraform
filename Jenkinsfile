@@ -48,14 +48,6 @@ pipeline {
                 sh 'terraform plan -input=false -out=tfplan'
             }
         }
-
-        stage('Approval') {
-            steps {
-                input message: 'Review Terraform plan. Continue with deployment?',
-                      ok: 'Deploy'
-            }
-        }
-
         stage('Terraform Apply') {
             steps {
                 echo 'Applying approved Terraform plan...'
